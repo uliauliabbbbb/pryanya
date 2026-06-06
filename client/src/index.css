@@ -1,0 +1,66 @@
+/* Шрифты Oswald, Work Sans, Cormorant Infant, Unbounded подключены
+   через @fontsource/* в src/main.tsx — Google Fonts не используются. */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Geometria';
+  src: url('/fonts/Geometria/geometria_light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geometria';
+  src: url('/fonts/Geometria/geometria_medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geometria';
+  src: url('/fonts/Geometria/geometria_bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geometria';
+  src: url('/fonts/Geometria/geometria_extrabold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html,
+  body {
+    @apply font-sans text-brown bg-cream antialiased;
+    font-weight: 400;
+  }
+  body {
+    @apply min-h-screen m-0;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-oswald uppercase tracking-normal text-brown;
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply max-w-container mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-pink px-6 py-3 font-medium text-white shadow-pink transition-all duration-300 ease-smooth hover:bg-pink-deep active:scale-[0.98];
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-brown/15 bg-white px-6 py-3 font-medium text-brown transition-all duration-300 ease-smooth hover:border-brown/30 hover:bg-cream-2;
+  }
+  .input {
+    @apply w-full rounded-2xl border border-brown/10 bg-cream px-4 py-2.5 text-sm text-brown outline-none transition focus:border-pink/40 focus:bg-white;
+  }
+}
