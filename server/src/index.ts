@@ -1,4 +1,5 @@
 import path from 'node:path';
+import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
 import cookieParser from 'cookie-parser';
@@ -20,6 +21,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 
 const app = express();
+
+// За HTTPS-прокси (Render). Нужно, чтобы secure-cookie выставлялись корректно.
+app.set('trust proxy', 1);
 
 app.use(cors({
   origin: env.clientOrigin,
@@ -46,9 +50,21 @@ app.use('/api/contact',    contactRouter);
 // Раздача загруженных файлов
 app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')));
 
-app.use((_req, res) => {
+// 404 только для несуществующих API-маршрутов
+app.use('/api', (_req, res) => {
   res.status(404).json({ error: 'Endpoint не найден' });
 });
+
+// В продакшене Express отдаёт собранный фронтенд (client/dist).
+// Любой не-API маршрут возвращает index.html, дальнейшую маршрутизацию
+// берёт на себя React Router в браузере.
+const clientDist = path.resolve(__dirname, '../../client/dist');
+if (fs.existsSync(clientDist)) {
+  app.use(express.static(clientDist));
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(clientDist, 'index.html'));
+  });
+}
 
 app.use(errorHandler);
 
