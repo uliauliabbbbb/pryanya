@@ -165,4 +165,4 @@ npm run dev                   # приложение на http://localhost:5173
 Айгуль, студентка. Full-stack разработка (React + TypeScript, Node.js).
 
 - GitHub: [uliauliabbbbb](https://github.com/uliauliabbbbb)
-- Email: ya.aibulat1@gmail.com
+- Email: aigulsobakuno@gmail.com
