@@ -13,13 +13,20 @@ services:
     plan: free
     rootDir: server
     healthCheckPath: /api/health
-    buildCommand: npm install && npm run prisma:generate && npm run build && npm run prisma:deploy
+    # Миграции уже применены к Neon вручную; на сборке deploy идёт как
+    # no-op. `|| true` — чтобы кратковременный обрыв связи с Neon
+    # (он засыпает) не ронял весь деплой.
+    buildCommand: npm install && npm run prisma:generate && npm run build && (npm run prisma:deploy || true)
     startCommand: npm run start
     envVars:
       - key: NODE_VERSION
         value: "20"
       - key: NODE_ENV
         value: production
+      # Neon зависает на session advisory-lock у `migrate deploy` (P1002).
+      # Отключаем lock — для одиночного инстанса это безопасно.
+      - key: PRISMA_SCHEMA_DISABLE_ADVISORY_LOCK
+        value: "1"
       - key: JWT_EXPIRES_IN
         value: 7d
       - key: JWT_SECRET
