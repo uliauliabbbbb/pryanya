@@ -1,5 +1,7 @@
 # Пряня
 
+##ссылка на сайт - https://pryaniki.netlify.app/##
+
 Интернет-магазин авторских пряников. Учебный full-stack проект, выполненный в рамках курсовой работы по дисциплине «Базы данных».
 
 ![React](https://img.shields.io/badge/React_19-61DAFB?logo=react&logoColor=black)
