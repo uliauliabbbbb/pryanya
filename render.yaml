@@ -13,10 +13,11 @@ services:
     plan: free
     rootDir: server
     healthCheckPath: /api/health
-    # Миграции уже применены к Neon вручную; на сборке deploy идёт как
-    # no-op. `|| true` — чтобы кратковременный обрыв связи с Neon
-    # (он засыпает) не ронял весь деплой.
-    buildCommand: npm install && npm run prisma:generate && npm run build && (npm run prisma:deploy || true)
+    # --include=dev обязателен: NODE_ENV=production заставляет npm
+    # пропускать devDependencies, а в них @types/* и typescript — без них
+    # tsc падает. Миграции уже применены к Neon вручную; на сборке deploy
+    # идёт как no-op, `|| true` — чтобы засыпающий Neon не ронял билд.
+    buildCommand: npm install --include=dev && npm run prisma:generate && npm run build && (npm run prisma:deploy || true)
     startCommand: npm run start
     envVars:
       - key: NODE_VERSION
