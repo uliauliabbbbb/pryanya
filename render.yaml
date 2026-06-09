@@ -1,0 +1,30 @@
+# ─── Render: бэкенд Пряни (server) ──────────────────────────────
+# Blueprint для Render. На dashboard: New → Blueprint → выбрать репозиторий.
+# Render прочитает этот файл и создаст web-сервис.
+#
+# Перед первым деплоем нужно задать секреты (sync: false) в UI Render:
+#   DATABASE_URL  — строка подключения к Neon (с ?sslmode=require)
+#   CLIENT_ORIGIN — адрес сайта на Netlify (https://<имя>.netlify.app)
+
+services:
+  - type: web
+    name: pranya-api
+    runtime: node
+    plan: free
+    rootDir: server
+    healthCheckPath: /api/health
+    buildCommand: npm install && npm run prisma:generate && npm run build && npm run prisma:deploy
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NODE_ENV
+        value: production
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: JWT_SECRET
+        generateValue: true     # Render сгенерирует надёжный секрет сам
+      - key: DATABASE_URL
+        sync: false             # вставить строку Neon вручную в UI
+      - key: CLIENT_ORIGIN
+        sync: false             # вставить URL сайта Netlify после деплоя фронта

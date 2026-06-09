@@ -1,0 +1,33 @@
+# ─── Netlify: фронтенд Пряни (client) ───────────────────────────
+# Фронт собирается из client/, а запросы /api и /uploads проксируются
+# на бэкенд Render. Прокси (status = 200) для браузера выглядит как
+# тот же домен, поэтому httpOnly-cookie авторизации работают без правок.
+
+[build]
+  base = "client"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# ВАЖНО: замени URL ниже на реальный адрес сервиса Render,
+# если Render присвоит имя, отличное от pranya-api.
+[[redirects]]
+  from = "/api/*"
+  to = "https://pranya-api.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/uploads/*"
+  to = "https://pranya-api.onrender.com/uploads/:splat"
+  status = 200
+  force = true
+
+# SPA-фоллбэк: любой неизвестный путь отдаёт index.html,
+# дальше маршрутизирует React Router в браузере.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
